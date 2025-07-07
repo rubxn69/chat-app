@@ -8,7 +8,7 @@ import { AppContext } from '../../context/AppContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const LeftSideBar = () => {
+const LeftSideBar = ({ onChatSelect }) => {
   const navigate = useNavigate();
   const { userData, chatData, chatUser, setChatUser, setMessagesId, messagesId } = useContext(AppContext);
   const [user, setUser] = useState(null);
@@ -58,7 +58,7 @@ const LeftSideBar = () => {
       const chatsRef = collection(db, "chats");
 
       await updateDoc(doc(chatsRef, user.id), {
-        chatData: arrayUnion({
+        chatsData: arrayUnion({
           messageId: newMessageRef.id,
           lastMessage: "",
           rId: userData.id,
@@ -68,7 +68,7 @@ const LeftSideBar = () => {
       });
 
       await updateDoc(doc(chatsRef, userData.id), {
-        chatData: arrayUnion({
+        chatsData: arrayUnion({
           messageId: newMessageRef.id,
           lastMessage: "",
           rId: user.id,
@@ -89,6 +89,9 @@ const LeftSideBar = () => {
   const setChat = async (item) => {
     setMessagesId(item.messageId)
     setChatUser(item)
+    if (onChatSelect) {
+      onChatSelect(); // Close mobile sidebar when chat is selected
+    }
   }
 
   return (
@@ -101,29 +104,36 @@ const LeftSideBar = () => {
             <div className="sub-menu">
               <p onClick={() => navigate('/profile')}>Edit Profile</p>
               <hr />
-              <p>Logout</p>
+              <p onClick={() => {/* Add logout logic */}}>Logout</p>
             </div>
           </div>
         </div>
         <div className="ls-search">
           <img src={assets.search_icon} alt="search" />
-          <input onChange={inputHandler} type="text" placeholder='Search here' />
+          <input onChange={inputHandler} type="text" placeholder='Search users...' />
         </div>
       </div>
 
       <div className="ls-list">
         {showSearch && user ? (
           <div onClick={addChat} className='friends add-user'>
-            <img src={assets.profile_img} alt="profile" />
-            <p>{user.name}</p>
+            <img src={user.avatar || assets.profile_img} alt="profile" />
+            <div>
+              <p>{user.name}</p>
+              <span>Click to start chat</span>
+            </div>
           </div>
         ) : (
           chatData?.map((item, index) => (
-            <div onClick={()=> setChat(item)} className="friends" key={index}>
-              <img src={assets.profile_img} alt="profile" />
+            <div 
+              onClick={() => setChat(item)} 
+              className={`friends ${chatUser?.messageId === item.messageId ? 'active' : ''}`} 
+              key={index}
+            >
+              <img src={item.userData?.avatar || assets.profile_img} alt="profile" />
               <div>
                 <p>{item.userData?.name || "Unknown User"}</p>
-                <span>{item.lastmessage || "No message yet"}</span>
+                <span>{item.lastMessage || "No message yet"}</span>
               </div>
             </div>
           ))

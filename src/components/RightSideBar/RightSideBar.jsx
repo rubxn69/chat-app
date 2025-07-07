@@ -1,19 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './RightSideBar.css'
 import assets from '../../assets/assets'
 import { logout } from '../../config/firebase'
+import { AppContext } from '../../context/AppContext'
 
 const RightSideBar = () => {
+  const { chatUser } = useContext(AppContext);
+  
   return (
     <div className='rs'>
       <div className="rs-profile">
-        <img src={assets.profile_img} alt="" />
-        <h3>Richard s <img className='dot' src={assets.green_dot} alt="" /></h3>
-        <p>Hey, There i am richard s</p>
+        <img src={chatUser?.userData?.avatar || assets.profile_img} alt="" />
+        <h3>
+          {chatUser?.userData?.name || "Select a chat"} 
+          {chatUser && <img className='dot' src={assets.green_dot} alt="" />}
+        </h3>
+        <p>{chatUser?.userData?.bio || "No bio available"}</p>
       </div>
       <hr />
       <div className="rs-media">
-        <p>Media</p>
+        <p>Shared Media</p>
         <div>
           <img src={assets.pic1} alt="" />
           <img src={assets.pic2} alt="" />
@@ -21,11 +27,9 @@ const RightSideBar = () => {
           <img src={assets.pic4} alt="" />
           <img src={assets.pic1} alt="" />
           <img src={assets.pic2} alt="" />
-          
         </div>
       </div>
-      <button onClick={()=>logout()}>Logout</button>
-      
+      <button onClick={() => logout()}>Logout</button>
     </div>
   )
 }
