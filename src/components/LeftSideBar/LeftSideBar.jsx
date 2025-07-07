@@ -3,7 +3,7 @@ import './LeftSidebar.css';
 import assets from '../../assets/assets';
 import { useNavigate } from 'react-router-dom';
 import { arrayUnion, collection, doc, getDocs, query, serverTimestamp, where, setDoc, updateDoc } from 'firebase/firestore';
-import { db } from '../../config/firebase';
+import { db, logout } from '../../config/firebase';
 import { AppContext } from '../../context/AppContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -94,8 +94,26 @@ const LeftSideBar = ({ onChatSelect }) => {
     }
   }
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/');
+    } catch (error) {
+      toast.error("Failed to logout");
+    }
+  }
+
   return (
     <div className='ls'>
+      {/* Mobile close button */}
+      <button 
+        className="mobile-close"
+        onClick={onChatSelect}
+        style={{ display: onChatSelect ? 'flex' : 'none' }}
+      >
+        ×
+      </button>
+
       <div className="ls-top">
         <div className="ls-nav">
           <img src={assets.logo} alt="logo" className='logo' />
@@ -104,7 +122,7 @@ const LeftSideBar = ({ onChatSelect }) => {
             <div className="sub-menu">
               <p onClick={() => navigate('/profile')}>Edit Profile</p>
               <hr />
-              <p onClick={() => {/* Add logout logic */}}>Logout</p>
+              <p onClick={handleLogout}>Logout</p>
             </div>
           </div>
         </div>

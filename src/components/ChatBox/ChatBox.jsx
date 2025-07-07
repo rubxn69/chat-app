@@ -6,10 +6,9 @@ import { arrayUnion, doc, getDoc, onSnapshot, updateDoc } from 'firebase/firesto
 import { db } from '../../config/firebase'
 import { toast } from 'react-toastify'
 
-const ChatBox = () => {
+const ChatBox = ({ onToggleSidebar }) => {
   const {userData, messagesId, chatUser, messages, setMessages} = useContext(AppContext)
   const [input, setInput] = useState("");
-  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
 
   const sendMessage = async () => {
     try {
@@ -79,15 +78,16 @@ const ChatBox = () => {
   return chatUser ? (
     <div className='chat-box'>
       {/* Mobile header */}
-      <div className="mobile-header" style={{display: window.innerWidth <= 768 ? 'flex' : 'none'}}>
-        <button className="mobile-menu-btn" onClick={() => setShowMobileSidebar(true)}>
+      <div className="mobile-header">
+        <button className="mobile-menu-btn" onClick={onToggleSidebar}>
           ☰
         </button>
-        <img src={chatUser.userData.avatar || assets.profile_img} alt="" style={{width: '35px', height: '35px', borderRadius: '50%'}} />
-        <p style={{flex: 1, margin: 0, fontSize: '16px', fontWeight: '600'}}>{chatUser.userData.name}</p>
+        <img src={chatUser.userData.avatar || assets.profile_img} alt="" />
+        <p>{chatUser.userData.name}</p>
       </div>
 
-      <div className="chat-user" style={{display: window.innerWidth <= 768 ? 'none' : 'flex'}}>
+      {/* Desktop header */}
+      <div className="chat-user">
         <img src={chatUser.userData.avatar || assets.profile_img} alt="" />
         <p>{chatUser.userData.name} <img className='dot' src={assets.green_dot} alt="" /></p>
         <img src={assets.help_icon} alt="" />

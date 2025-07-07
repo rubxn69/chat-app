@@ -16,8 +16,12 @@ const Chat = () => {
     }
   },[chatData,userData])
 
-  const toggleMobileSidebar = () => {
-    setShowMobileSidebar(!showMobileSidebar);
+  const handleChatSelect = () => {
+    setShowMobileSidebar(false);
+  }
+
+  const handleToggleSidebar = () => {
+    setShowMobileSidebar(true);
   }
 
   return (
@@ -27,34 +31,27 @@ const Chat = () => {
       ) : (
         <>
           {/* Mobile overlay */}
-          {showMobileSidebar && (
-            <div 
-              className={`mobile-overlay ${showMobileSidebar ? 'active' : ''}`}
-              onClick={() => setShowMobileSidebar(false)}
-            />
-          )}
+          <div 
+            className={`mobile-overlay ${showMobileSidebar ? 'active' : ''}`}
+            onClick={() => setShowMobileSidebar(false)}
+          />
           
           <div className='chat-container'>
-            {/* Desktop sidebar */}
-            <div className="desktop-sidebar" style={{display: window.innerWidth > 768 ? 'block' : 'none'}}>
+            {/* Desktop sidebar - always visible on desktop */}
+            <div className="desktop-sidebar">
               <LeftSideBar />
             </div>
             
             {/* Mobile sidebar */}
-            <div className={`mobile-sidebar ${showMobileSidebar ? 'active' : ''}`} style={{display: window.innerWidth <= 768 ? 'block' : 'none'}}>
-              <button 
-                className="mobile-close"
-                onClick={() => setShowMobileSidebar(false)}
-              >
-                ×
-              </button>
-              <LeftSideBar onChatSelect={() => setShowMobileSidebar(false)} />
+            <div className={`mobile-sidebar ${showMobileSidebar ? 'active' : ''}`}>
+              <LeftSideBar onChatSelect={handleChatSelect} />
             </div>
             
-            <ChatBox onToggleSidebar={toggleMobileSidebar} />
+            {/* Chat box with mobile toggle */}
+            <ChatBox onToggleSidebar={handleToggleSidebar} />
             
             {/* Right sidebar - hidden on mobile */}
-            <div className="desktop-right-sidebar" style={{display: window.innerWidth > 768 ? 'block' : 'none'}}>
+            <div className="desktop-right-sidebar">
               <RightSideBar />
             </div>
           </div>
@@ -63,5 +60,3 @@ const Chat = () => {
     </div>
   )
 }
-
-export default Chat

@@ -19,6 +19,7 @@
   display: grid;
   grid-template-columns: 320px 1fr 280px;
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .loading {
@@ -26,6 +27,22 @@
   color: #3b82f6;
   text-align: center;
   font-weight: 500;
+}
+
+.desktop-sidebar {
+  display: block;
+}
+
+.desktop-right-sidebar {
+  display: block;
+}
+
+.mobile-sidebar {
+  display: none;
+}
+
+.mobile-overlay {
+  display: none;
 }
 
 /* Mobile responsive design */
@@ -46,7 +63,16 @@
     border-radius: 12px;
   }
   
+  .desktop-sidebar {
+    display: none;
+  }
+  
+  .desktop-right-sidebar {
+    display: none;
+  }
+  
   .mobile-sidebar {
+    display: block;
     position: fixed;
     top: 0;
     left: 0;
@@ -63,6 +89,7 @@
   }
   
   .mobile-overlay {
+    display: block;
     position: fixed;
     top: 0;
     left: 0;
