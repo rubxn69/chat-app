@@ -100,7 +100,6 @@ const ChatBox = ({ onToggleSidebar }) => {
               <div className='msg'>{msg.text}</div>
               <div className="msg-time">{convertTimestamp(msg.createdAt)}</div>
             </div>
-            <img src={msg.sId === userData.id ? (userData.avatar || assets.profile_img) : (chatUser.userData.avatar || assets.profile_img)} alt="" />
           </div>
         ))}
       </div>
@@ -117,7 +116,9 @@ const ChatBox = ({ onToggleSidebar }) => {
         <label htmlFor='image'>
           <img src={assets.gallery_icon} alt="Gallery"/>
         </label>
-        <img onClick={sendMessage} src={assets.send_button} alt="Send" />
+        <button className="send-btn" onClick={sendMessage}>
+          <img src={assets.send_button} alt="Send" />
+        </button>
       </div>
     </div>
   ) : (
