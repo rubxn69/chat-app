@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import './LeftSideBar.css';
+import './LeftSidebar.css';
 import assets from '../../assets/assets';
 import { useNavigate } from 'react-router-dom';
 import { arrayUnion, collection, doc, getDocs, query, serverTimestamp, where, setDoc, updateDoc } from 'firebase/firestore';
