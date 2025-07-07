@@ -10,7 +10,7 @@ const RightSideBar = () => {
   return (
     <div className='rs'>
       <div className="rs-profile">
-        <img src={chatUser?.userData?.avatar || assets.profile_img} alt="" />
+        <img src={assets.avatar_icon} alt="" />
         <h3>
           {chatUser?.userData?.name || "Select a chat"} 
           {chatUser && <img className='dot' src={assets.green_dot} alt="" />}
